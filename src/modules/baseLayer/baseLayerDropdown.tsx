@@ -5,7 +5,6 @@ import { MapContext } from "../map/mapContext";
 import { optionsFromCapabilities } from "ol/source/WMTS";
 import { WMTSCapabilities } from "ol/format";
 
-const ortoPhotoLayer = new TileLayer();
 const parser = new WMTSCapabilities();
 
 async function loadWtmsSource(
@@ -28,10 +27,24 @@ async function loadFlyfotoLayer() {
   return await loadWtmsSource(url, config);
 }
 
+async function loadKartverket() {
+  const url =
+    "https://opencache.statkart.no/gatekeeper/gk/gk.open_wmts?request=GetCapabilities&service=WMS";
+  const config = {
+    layer: "norgeskart_bakgrunn",
+    matrixSet: "EPSG:3857",
+  };
+  return await loadWtmsSource(url, config);
+}
+
+const ortoPhotoLayer = new TileLayer();
+const kartverketLayer = new TileLayer();
+
 export function BaseLayerDropdown() {
   const { setBaseLayer } = useContext(MapContext);
 
   useEffect(() => {
+    loadKartverket().then((source) => kartverketLayer.setSource(source));
     loadFlyfotoLayer().then((source) => ortoPhotoLayer.setSource(source));
   }, []);
 
@@ -65,6 +78,11 @@ export function BaseLayerDropdown() {
       id: "ortophoto",
       name: "Flyfoto",
       layer: ortoPhotoLayer,
+    },
+    {
+      id: "kartverket",
+      name: "Kartverket",
+      layer: kartverketLayer,
     },
   ];
 
