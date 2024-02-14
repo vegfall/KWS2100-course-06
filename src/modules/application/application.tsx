@@ -28,7 +28,7 @@ export function Application() {
 
   const [vectorLayers, setVectorLayers] = useState<Layer[]>([]);
 
-  const allLayers = useMemo(
+  const layers = useMemo(
     () => [baseLayer, ...vectorLayers],
     [baseLayer, vectorLayers],
   );
@@ -38,8 +38,8 @@ export function Application() {
   }, []);
 
   useEffect(() => {
-    map.setLayers(allLayers);
-  }, [allLayers]);
+    map.setLayers(layers);
+  }, [layers]);
 
   function handleFocusUser(e: React.MouseEvent) {
     e.preventDefault();
@@ -56,12 +56,7 @@ export function Application() {
 
   return (
     <MapContext.Provider
-      value={{
-        map,
-        layers: vectorLayers,
-        setLayers: setVectorLayers,
-        setBaseLayer,
-      }}
+      value={{ map, vectorLayers, setVectorLayers, setBaseLayer }}
     >
       <header>
         <h1>My Awesome Map!</h1>

@@ -25,9 +25,9 @@ function getStedsnavn(navn: Stedsnavn[]) {
 }
 
 function useFylkeFeatures() {
-  const { map, layers } = useContext(MapContext);
+  const { map, vectorLayers } = useContext(MapContext);
 
-  const layer = layers.find(
+  const layer = vectorLayers.find(
     (l) => l.getClassName() === "fylker",
   ) as FylkeVectorLayer;
 
