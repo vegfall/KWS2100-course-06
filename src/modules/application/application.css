@@ -8,6 +8,10 @@
   height: 100dvh;
 }
 
+a {
+  padding: 0 0 0 4px;
+}
+
 nav {
   display: flex;
   gap: 1em;

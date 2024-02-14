@@ -11,6 +11,7 @@ import { FylkeLayerCheckbox } from "../fylke/fylkeLayerCheckbox";
 import { FylkeAside } from "../fylke/fylkeAside";
 import { SchoolLayerCheckbox } from "../school/schoolLayerCheckbox";
 import { SchoolAside } from "../school/schoolAside";
+import { BaseLayerDropdown } from "../baseLayer/baseLayerDropdown";
 
 export function Application() {
   const mapRef = useRef() as MutableRefObject<HTMLDivElement>;
@@ -48,6 +49,7 @@ export function Application() {
         <a href="#" onClick={handleFocusUser}>
           My location
         </a>
+        <BaseLayerDropdown />
         <KommuneLayerCheckbox />
         <FylkeLayerCheckbox />
         <SchoolLayerCheckbox />
