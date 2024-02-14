@@ -22,6 +22,16 @@ export function BaseLayerDropdown() {
         }),
       }),
     },
+    {
+      id: "stadia_dark",
+      name: "Stadia Dark",
+      layer: new TileLayer({
+        source: new StadiaMaps({
+          layer: "alidade_smooth_dark",
+          retina: true,
+        }),
+      }),
+    },
   ];
 
   const [selectedLayer, setSelectedLayer] = useState(baseLayersOptions[0]);
