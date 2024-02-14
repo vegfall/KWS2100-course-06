@@ -1,10 +1,39 @@
 import React, { useContext, useEffect, useState } from "react";
 import TileLayer from "ol/layer/Tile";
-import { OSM, StadiaMaps } from "ol/source";
+import { OSM, StadiaMaps, WMTS } from "ol/source";
 import { MapContext } from "../map/mapContext";
+import { optionsFromCapabilities } from "ol/source/WMTS";
+import { WMTSCapabilities } from "ol/format";
+
+const ortoPhotoLayer = new TileLayer();
+const parser = new WMTSCapabilities();
+
+async function loadWtmsSource(
+  url: string,
+  config: { matrixSet: string; layer: string },
+) {
+  const res = await fetch(url);
+  const text = await res.text();
+  const result = parser.read(text);
+  return new WMTS(optionsFromCapabilities(result, config)!);
+}
+
+async function loadFlyfotoLayer() {
+  const url =
+    "https://opencache.statkart.no/gatekeeper/gk/gk.open_nib_web_mercator_wmts_v2?SERVICE=WMTS&REQUEST=GetCapabilities";
+  const config = {
+    layer: "Nibcache_web_mercator_v2",
+    matrixSet: "default028mm",
+  };
+  return await loadWtmsSource(url, config);
+}
 
 export function BaseLayerDropdown() {
   const { setBaseLayer } = useContext(MapContext);
+
+  useEffect(() => {
+    loadFlyfotoLayer().then((source) => ortoPhotoLayer.setSource(source));
+  }, []);
 
   const baseLayersOptions = [
     {
@@ -31,6 +60,11 @@ export function BaseLayerDropdown() {
           retina: true,
         }),
       }),
+    },
+    {
+      id: "ortophoto",
+      name: "Flyfoto",
+      layer: ortoPhotoLayer,
     },
   ];
 
