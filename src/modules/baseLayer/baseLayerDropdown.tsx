@@ -37,8 +37,18 @@ async function loadKartverket() {
   return await loadWtmsSource(url, config);
 }
 
+async function loadPolar() {
+  const url = "/polar.xml";
+  const config = {
+    layer: "arctic_cascading",
+    matrixSet: "3571",
+  };
+  return await loadWtmsSource(url, config);
+}
+
 const ortoPhotoLayer = new TileLayer();
 const kartverketLayer = new TileLayer();
+const polarLayer = new TileLayer();
 
 export function BaseLayerDropdown() {
   const { setBaseLayer } = useContext(MapContext);
@@ -46,6 +56,7 @@ export function BaseLayerDropdown() {
   useEffect(() => {
     loadKartverket().then((source) => kartverketLayer.setSource(source));
     loadFlyfotoLayer().then((source) => ortoPhotoLayer.setSource(source));
+    loadPolar().then((source) => polarLayer.setSource(source));
   }, []);
 
   const baseLayersOptions = [
@@ -83,6 +94,11 @@ export function BaseLayerDropdown() {
       id: "kartverket",
       name: "Kartverket",
       layer: kartverketLayer,
+    },
+    {
+      id: "polar",
+      name: "Arktisk",
+      layer: polarLayer,
     },
   ];
 
